@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeShout - Education Platform Integrations</title>
+  <style>
+    :root {
+      --primary: #2b174f;
+      --secondary: #ff6b41;
+      --text: #334155;
+      --light-bg: #f8fafc;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #0ea5e9;
+      --google-blue: #4285F4;
+      --google-red: #DB4437;
+      --google-yellow: #F4B400;
+      --google-green: #0F9D58;
+      --microsoft-blue: #0078d4;
+      --microsoft-dark: #106ebe;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    
+    body {
+      color: var(--text);
+      background-color: var(--light-bg);
+      line-height: 1.5;
+      padding: 30px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .logo-icon {
+      background-color: var(--secondary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 20px;
+    }
+    
+    .platform-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    
+    .platform-tab {
+      padding: 15px 25px;
+      background-color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .platform-tab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .platform-tab.active {
+      border-color: var(--secondary);
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .tab-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .integration-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .integration-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .integration-banner {
+      position: relative;
+      height: 260px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .google-banner {
+      background: linear-gradient(135deg, #4285F4 0%, #0F9D58 100%);
+    }
+    
+    .microsoft-banner {
+      background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+    }
+    
+    .ad-banner {
+      background: linear-gradient(135deg, #333333 0%, #666666 100%);
+    }
+    
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px;
+      color: white;
+    }
+    
+    .banner-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    
+    .banner-description {
+      font-size: 18px;
+      max-width: 600px;
+    }
+    
+    .integration-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .integration-features {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    .section-subtitle {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: #64748b;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    
+    .feature-card {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding: 25px;
+      height: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    .integration-stats {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .stat-card {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #64748b;
+    }
+    
+    .stat-change {
+      font-size: 12px;
+      color: var(--success);
+      margin-top: 5px;
+    }
+    
+    .integration-demo {
+      margin-top: 40px;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    
+    .demo-header {
+      padding: 20px 30px;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .demo-content {
+      padding: 30px;
+    }
+    
+    .admin-tabs {
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+    }
+    
+    .admin-tab {
+      font-weight: 500;
+      cursor: pointer;
+      padding-bottom: 10px;
+      border-bottom: 2px solid transparent;
+    }
+    
+    .admin-tab.active {
+      border-bottom-color: var(--secondary);
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .admin-panel {
+      display: none;
+    }
+    
+    .admin-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .data-table th, .data-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .data-table th {
+      background-color: var(--light-bg);
+      font-weight: 600;
+    }
+    
+    .data-table tbody tr:hover {
+      background-color: var(--light-bg);
+    }
+    
+    .sync-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .sync-status-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+    
+    .sync-status-pending {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+    
+    .sync-status-error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3c2269;
+    }
+    
+    .btn-secondary {
+      background-color: white;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--light-bg);
+    }
+    
+    .btn-google {
+      background-color: var(--google-blue);
+      color: white;
+    }
+    
+    .btn-microsoft {
+      background-color: var(--microsoft-blue);
+      color: white;
+    }
+    
+    .btn-microsoft:hover {
+      background-color: var(--microsoft-dark);
+    }
+    
+    .btn-ad {
+      background-color: #333;
+      color: white;
+    }
+    
+    .btn-ad:hover {
+      background-color: #444;
+    }
+    
+    .setup-flow {
+      margin-top: 40px;
+    }
+    
+    .setup-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    
+    .setup-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 150px;
+      position: relative;
+    }
+    
+    .setup-step::after {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 75px;
+      width: 150px;
+      height: 2px;
+      background-color: var(--border);
+    }
+    
+    .setup-step:last-child::after {
+      display: none;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--light-bg);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .step-number.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .step-number.completed {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .step-text {
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .setup-details {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+    
+    .badge-primary {
+      background-color: rgba(43, 23, 79, 0.1);
+      color: var(--primary);
+    }
+    
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+    
+    .badge-danger {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+    
+    .data-mapping {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    
+    .mapping-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .mapping-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .mapping-source {
+      flex: 1;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+    
+    .mapping-arrow {
+      font-size: 24px;
+      margin-right: 15px;
+      color: #64748b;
+    }
+    
+    .mapping-target {
+      flex: 1;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+    }
+    
+    .mapping-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .mapping-description {
+      font-size: 14px;
+      color: #64748b;
+    }
+    
+    .google-source {
+      border-left: 4px solid var(--google-blue);
+    }
+    
+    .microsoft-source {
+      border-left: 4px solid var(--microsoft-blue);
+    }
+    
+    .ad-source {
+      border-left: 4px solid #333;
+    }
+    
+    .safeshout-target {
+      border-left: 4px solid var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      .integration-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .setup-steps {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+      }
+      
+      .setup-step {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+      }
+      
+      .setup-step::after {
+        display: none;
+      }
+      
+      .step-number {
+        margin-right: 15px;
+        margin-bottom: 0;
+      }
+      
+      .step-text {
+        text-align: left;
+      }
+      
+      .mapping-row {
+        flex-direction: column;
+      }
+      
+      .mapping-source, .mapping-target {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      
+      .mapping-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">S</div>
+        SafeShout Education Integrations
+      </div>
+      
+      <div style="font-size: 14px; color: #64748b;">
+        View full integration details for Google Classroom, EntraID, and Active Directory
+      </div>
+    </header>
+    
+    <div class="platform-tabs">
+      <div class="platform-tab active" onclick="showIntegration('google')">
+        <div class="tab-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.5 12.5H12V16.5H17.25C16.5 18.5 14.62 19.5 12 19.5C8.62 19.5 6 16.88 6 13.5C6 10.12 8.62 7.5 12 7.5C13.5 7.5 14.88 8.12 15.88 9L19 5.88C17.25 4.25 14.75 3 12 3C6.5 3 2 7.5 2 13C2 18.5 6.5 23 12 23C17 23 21.5 19.62 21.5 13.5C21.5 13 21.5 12.5 21.5 12.5Z" fill="#4285F4"/>
+            <path d="M5 8.5L8.25 11C9.25 9 10.62 7.5 12.5 7.5C14 7.5 15.38 8.12 16.38 9L19.5 5.88C17.75 4.25 15.25 3 12.5 3C9.25 3 6.38 5.25 5 8.5Z" fill="#EA4335"/>
+            <path d="M12 22C14.75 22 17.25 21.25 19 19.5L15.5 16.5C14.5 17.25 13.25 17.5 12 17.5C9.37 17.5 7.12 15.88 6.37 13.5L2.75 16.25C4.12 19.75 7.87 22 12 22Z" fill="#34A853"/>
+            <path d="M21.5 12.5H12V16.5H17.25C16.87 17.38 16.25 18.12 15.5 18.62L19 21.62C21 19.62 22 16.87 22 13.5C22 13 21.5 12.5 21.5 12.5Z" fill="#FBBC05"/>
+          </svg>
+        </div>
+        <span>Google Classroom</span>
+      </div>
+      
+      <div class="platform-tab" onclick="showIntegration('microsoft')">
+        <div class="tab-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="9.5" height="9.5" fill="#F25022"/>
+            <rect x="12.5" y="2" width="9.5" height="9.5" fill="#7FBA00"/>
+            <rect x="2" y="12.5" width="9.5" height="9.5" fill="#00A4EF"/>
+            <rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#FFB900"/>
+          </svg>
+        </div>
+        <span>Microsoft EntraID</span>
+      </div>
+      
+      <div class="platform-tab" onclick="showIntegration('ad')">
+        <div class="tab-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="#0078D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 6L12 13L2 6" stroke="#0078D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span>Active Directory</span>
+      </div>
+    </div>
+    
+    <!-- Google Classroom Integration Content -->
+    <div id="google-integration" class="integration-content active">
+      <div class="integration-banner google-banner">
+        <div class="banner-overlay">
+          <div class="banner-title">Google Classroom Integration</div>
+          <div class="banner-description">Seamlessly connect SafeShout with your Google Classroom environment for enhanced safeguarding capabilities while maintaining your existing Google Workspace infrastructure.</div>
+        </div>
+      </div>
+      
+      <div class="integration-grid">
+        <div class="integration-features">
+          <h2 class="section-title">Key Features</h2>
+          <p class="section-subtitle">Enhance your Google Classroom setup with comprehensive safeguarding tools that work seamlessly with your existing infrastructure.</p>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-blue);">👥</div>
+              <div class="feature-title">Automatic User Sync</div>
+              <p>Automatically import student and teacher data from Google Classroom, keeping your SafeShout user base in sync with your classroom structure.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-red);">🔒</div>
+              <div class="feature-title">Single Sign-On</div>
+              <p>Enable students and staff to access SafeShout using their existing Google credentials, simplifying the login process with secure OAuth 2.0 authentication.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-green);">📊</div>
+              <div class="feature-title">Data Integration</div>
+              <p>Correlate attendance, performance, and safeguarding data to provide a complete picture of student wellbeing and identify patterns requiring intervention.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-yellow);">🔔</div>
+              <div class="feature-title">Classroom Notifications</div>
+              <p>Send safeguarding alerts directly to teacher's Google Classroom interface, ensuring critical information is seen when and where it matters most.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-blue);">📱</div>
+              <div class="feature-title">Mobile Accessibility</div>
+              <p>Access SafeShout seamlessly through the Google Classroom mobile app, enabling reporting and monitoring on any device.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--google-green);">🔄</div>
+              <div class="feature-title">Real-Time Updates</div>
+              <p>Changes in Google Classroom are automatically reflected in SafeShout, ensuring your safeguarding information is always current.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="integration-stats">
+          <h2 class="section-title">Integration Stats</h2>
+          <p class="section-subtitle">Real-time statistics about your Google Classroom integration.</p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">754</div>
+              <div class="stat-label">Total Synced Users</div>
+              <div class="stat-change">+12 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">32</div>
+              <div class="stat-label">Connected Classes</div>
+              <div class="stat-change">+3 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">96%</div>
+              <div class="stat-label">Sync Success Rate</div>
+              <div class="stat-change">+2% from last month</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">5m</div>
+              <div class="stat-label">Avg. Sync Time</div>
+              <div class="stat-change">-30s from last month</div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 30px;">
+            <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Last Synchronization</h3>
+            <div style="background-color: white; border-radius: 8px; padding: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div style="font-weight: 500;">Status</div>
+                <div style="font-weight: 500; color: var(--success);">Completed Successfully</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Time</div>
+                <div>Today, 10:15 AM</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Duration</div>
+                <div>4m 32s</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between;">
+                <div>Changes</div>
+                <div>+2 users, +1 class, 15 updates</div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-google" style="width: 100%; margin-top: 20px;">Force Sync Now</button>
+        </div>
+      </div>
+      
+      <div class="integration-demo">
+        <div class="demo-header">
+          <h2>Google Classroom Administration</h2>
+          <button class="btn btn-secondary">Connect New Class</button>
+        </div>
+        
+        <div class="demo-content">
+          <div class="admin-tabs">
+            <div class="admin-tab active" onclick="switchAdminTab('google-classes')">Connected Classes</div>
+            <div class="admin-tab" onclick="switchAdminTab('google-users')">User Synchronization</div>
+            <div class="admin-tab" onclick="switchAdminTab('google-config')">Configuration</div>
+            <div class="admin-tab" onclick="switchAdminTab('google-logs')">Sync Logs</div>
+          </div>
+          
+          <!-- Classes Panel -->
+          <div id="google-classes" class="admin-panel active">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Class Name</th>
+                  <th>Teacher</th>
+                  <th>Students</th>
+                  <th>Last Sync</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Year 10 - Science</td>
+                  <td>Mr. Williams</td>
+                  <td>32</td>
+                  <td>Today, 10:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Year 9 - English</td>
+                  <td>Ms. Johnson</td>
+                  <td>28</td>
+                  <td>Today, 10:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Year 11 - Mathematics</td>
+                  <td>Mr. Chen</td>
+                  <td>30</td>
+                  <td>Today, 10:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Year 8 - History</td>
+                  <td>Ms. Patel</td>
+                  <td>31</td>
+                  <td>Today, 10:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Year 7 - Geography</td>
+                  <td>Mr. Thompson</td>
+                  <td>33</td>
+                  <td>Today, 10:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Users Panel -->
+          <div id="google-users" class="admin-panel">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              <div>
+                <h3 style="font-size: 18px; margin-bottom: 10px; color: var(--primary);">User Synchronization</h3>
+                <p>View and manage users synchronized from Google Classroom</p>
+              </div>
+              <div>
+                <button class="btn btn-primary">Add Manual User</button>
+              </div>
+            </div>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Classes</th>
+                  <th>Last Active</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sophie Taylor</td>
+                  <td>sophie.taylor@school.edu</td>
+                  <td>Student</td>
+                  <td>3</td>
+                  <td>Today, 9:45 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Marcus Johnson</td>
+                  <td>marcus.johnson@school.edu</td>
+                  <td>Student</td>
+                  <td>4</td>
+                  <td>Today, 8:30 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Amelia Clarke</td>
+                  <td>amelia.clarke@school.edu</td>
+                  <td>Student</td>
+                  <td>3</td>
+                  <td>Yesterday, 2:15 PM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Mr. Williams</td>
+                  <td>j.williams@school.edu</td>
+                  <td>Teacher</td>
+                  <td>2</td>
+                  <td>Today, 11:20 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Ms. Johnson</td>
+                  <td>a.johnson@school.edu</td>
+                  <td>Teacher</td>
+                  <td>3</td>
+                  <td>Today, 10:05 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Configuration Panel -->
+          <div id="google-config" class="admin-panel">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Google Classroom API Settings</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">API Status</label>
+                  <div style="display: flex; align-items: center;">
+                    <span style="width: 12px; height: 12px; background-color: var(--success); border-radius: 50%; margin-right: 8px;"></span>
+                    <span>Connected</span>
+                  </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">OAuth Client ID</label>
+                  <input type="text" value="•••••••••••••••••••••••••••••••••••••••••••••" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);" disabled>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Scopes</label>
+                  <div style="background-color: white; padding: 10px; border-radius: 4px; border: 1px solid var(--border);">
+                    <div><span class="badge badge-primary">classroom.courses.readonly</span></div>
+                    <div><span class="badge badge-primary">classroom.rosters.readonly</span></div>
+                    <div><span class="badge badge-primary">classroom.profile.emails</span></div>
+                    <div><span class="badge badge-primary">classroom.profile.photos</span></div>
+                  </div>
+                </div>
+                
+                <button class="btn btn-primary">Edit API Settings</button>
+              </div>
+              
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Synchronization Settings</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Sync Frequency</label>
+                  <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                    <option>Every 6 hours</option>
+                    <option selected>Every 12 hours</option>
+                    <option>Every 24 hours</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">User Deletion Behavior</label>
+                  <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                    <option>Deactivate immediately</option>
+                    <option selected>Deactivate after 30 days</option>
+                    <option>Keep indefinitely</option>
+                  </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Role Mapping</label>
+                  <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 4px; overflow: hidden;">
+                    <tr>
+                      <th style="text-align: left; padding: 8px; border-bottom: 1px solid var(--border);">Google Role</th>
+                      <th style="text-align: left; padding: 8px; border-bottom: 1px solid var(--border);">SafeShout Role</th>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Teacher</td>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Staff</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Student</td>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Student</td>
+                    </tr>
+                  </table>
+                </div>
+                
+                <button class="btn btn-primary">Update Settings</button>
+              </div>
+            </div>
+            
+            <div class="data-mapping">
+              <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Data Mapping</h3>
+              <p style="margin-bottom: 20px;">See how Google Classroom data maps to SafeShout fields</p>
+              
+              <div class="mapping-row">
+                <div class="mapping-source google-source">
+                  <div class="mapping-title">Google User Profile</div>
+                  <div class="mapping-description">name, email, photo, courses</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout User</div>
+                  <div class="mapping-description">name, email, profileImage, classes</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source google-source">
+                  <div class="mapping-title">Google Course</div>
+                  <div class="mapping-description">id, name, section, ownerId, students</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Class</div>
+                  <div class="mapping-description">id, name, section, teacherId, students</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source google-source">
+                  <div class="mapping-title">Google Coursework</div>
+                  <div class="mapping-description">submissions, grades, timestamps</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Academic Data</div>
+                  <div class="mapping-description">submissions, grades, activityTimeline</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Logs Panel -->
+          <div id="google-logs" class="admin-panel">
+            <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Synchronization Logs</h3>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Event</th>
+                  <th>Details</th>
+                  <th>Status</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>May 19, 2025 - 10:15 AM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full sync of all classes and users</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>4m 32s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 10:15 PM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full sync of all classes and users</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>4m 45s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 3:42 PM</td>
+                  <td>Manual Sync</td>
+                  <td>New class "Year 7 - Geography" added</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>1m 12s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 10:15 AM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full sync of all classes and users</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>4m 51s</td>
+                </tr>
+                <tr>
+                  <td>May 17, 2025 - 10:15 PM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full sync of all classes and users</td>
+                  <td><span class="sync-status sync-status-warning">Warning</span></td>
+                  <td>6m 03s</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="setup-flow">
+        <h2 class="section-title">Setup Process</h2>
+        <p class="section-subtitle">Follow these steps to set up the Google Classroom integration.</p>
+        
+        <div class="setup-steps">
+          <div class="setup-step">
+            <div class="step-number completed">1</div>
+            <div class="step-text">Enable Google Classroom API</div>
+          </div>
+          
+          <div class="setup-step">
+            <div class="step-number active">2</div>
+            <div class="step-text">Configure Authentication</div>
+          </div>
+          
+          <div class="setup-step">
+            <div class="step-number">3</div>
+            <div class="step-text">Select Classes to Sync</div>
+          </div>
+          
+          <div class="setup-step">
+            <div class="step-number">4</div>
+            <div class="step-text">Map User Roles</div>
+          </div>
+          
+          <div class="setup-step">
+            <div class="step-number">5</div>
+            <div class="step-text">Initial Synchronization</div>
+          </div>
+        </div>
+        
+        <div class="setup-details">
+          <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--primary);">Step 2: Configure Authentication</h3>
+          <p style="margin-bottom: 20px;">Set up OAuth authentication to allow SafeShout to access your Google Classroom data.</p>
+          
+          <div style="margin-top: 20px;">
+            <div style="font-weight: 600; margin-bottom: 10px;">Required Steps:</div>
+            <ol style="padding-left: 20px;">
+              <li style="margin-bottom: 10px;">In the Google Cloud Console, navigate to <strong>APIs & Services > Credentials</strong>.</li>
+              <li style="margin-bottom: 10px;">Click <strong>Create Credentials</strong> and select <strong>OAuth client ID</strong>.</li>
+              <li style="margin-bottom: 10px;">Set the application type to <strong>Web application</strong>.</li>
+              <li style="margin-bottom: 10px;">Add your SafeShout domain as an authorized JavaScript origin.</li>
+              <li style="margin-bottom: 10px;">Add your callback URL as an authorized redirect URI.</li>
+              <li>Copy the generated Client ID and Client Secret and paste them into the SafeShout admin panel.</li>
+            </ol>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+            <button class="btn btn-secondary">Previous Step</button>
+            <button class="btn btn-google">Continue to Step 3</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Microsoft EntraID Integration Content -->
+    <div id="microsoft-integration" class="integration-content">
+      <div class="integration-banner microsoft-banner">
+        <div class="banner-overlay">
+          <div class="banner-title">Microsoft EntraID Integration</div>
+          <div class="banner-description">Leverage your Microsoft EntraID infrastructure to enhance safeguarding capabilities with secure authentication, identity management, and Teams integration.</div>
+        </div>
+      </div>
+      
+      <div class="integration-grid">
+        <div class="integration-features">
+          <h2 class="section-title">Key Features</h2>
+          <p class="section-subtitle">Enhance your safeguarding with comprehensive Microsoft 365 integration.</p>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">🔐</div>
+              <div class="feature-title">EntraID Authentication</div>
+              <p>Seamless authentication using Microsoft EntraID, allowing single sign-on with existing credentials and comprehensive access management.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">👥</div>
+              <div class="feature-title">User Directory Sync</div>
+              <p>Automatically synchronize user accounts, groups, and organizational structures from EntraID to SafeShout's safeguarding platform.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">📝</div>
+              <div class="feature-title">Teams Integration</div>
+              <p>Enable safeguarding notifications and alerts directly within Microsoft Teams, ensuring staff can respond quickly to concerns.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">📊</div>
+              <div class="feature-title">Power BI Analytics</div>
+              <p>Connect SafeShout data to Microsoft Power BI for advanced safeguarding analytics and custom reporting dashboards.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">🔒</div>
+              <div class="feature-title">Security Groups</div>
+              <p>Map EntraID security groups to SafeShout roles for automatic permission management across your organization.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: var(--microsoft-blue);">📱</div>
+              <div class="feature-title">Mobile Access</div>
+              <p>Access SafeShout through Microsoft mobile apps with full authentication and security features enabled.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="integration-stats">
+          <h2 class="section-title">Integration Stats</h2>
+          <p class="section-subtitle">Real-time statistics about your Microsoft integration.</p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">612</div>
+              <div class="stat-label">Total EntraID Users</div>
+              <div class="stat-change">+8 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Security Groups</div>
+              <div class="stat-change">+2 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">98%</div>
+              <div class="stat-label">Authentication Success</div>
+              <div class="stat-change">+1% from last month</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">42</div>
+              <div class="stat-label">Teams Notifications</div>
+              <div class="stat-change">+12 from last week</div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 30px;">
+            <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Teams Integration Status</h3>
+            <div style="background-color: white; border-radius: 8px; padding: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div style="font-weight: 500;">Status</div>
+                <div style="font-weight: 500; color: var(--success);">Connected</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Channels</div>
+                <div>5 active channels</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Notifications</div>
+                <div>Enabled (High priority only)</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between;">
+                <div>Adaptive Cards</div>
+                <div>Enabled</div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-microsoft" style="width: 100%; margin-top: 20px;">Manage Teams Settings</button>
+        </div>
+      </div>
+      
+      <div class="integration-demo">
+        <div class="demo-header">
+          <h2>Microsoft EntraID Integration</h2>
+          <button class="btn btn-secondary">Connect New Group</button>
+        </div>
+        
+        <div class="demo-content">
+          <div class="admin-tabs">
+            <div class="admin-tab active" onclick="switchAdminTab('ms-groups')">Security Groups</div>
+            <div class="admin-tab" onclick="switchAdminTab('ms-users')">Directory Users</div>
+            <div class="admin-tab" onclick="switchAdminTab('ms-teams')">Teams Integration</div>
+            <div class="admin-tab" onclick="switchAdminTab('ms-config')">Configuration</div>
+          </div>
+          
+          <!-- Security Groups Panel -->
+          <div id="ms-groups" class="admin-panel active">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Group Name</th>
+                  <th>Group Type</th>
+                  <th>Members</th>
+                  <th>SafeShout Role</th>
+                  <th>Last Sync</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Designated Safeguarding Leads</td>
+                  <td>Security Group</td>
+                  <td>6</td>
+                  <td>Administrator</td>
+                  <td>Today, 9:30 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Teaching Staff</td>
+                  <td>Microsoft 365 Group</td>
+                  <td>42</td>
+                  <td>Reporter</td>
+                  <td>Today, 9:30 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Form Tutors</td>
+                  <td>Distribution Group</td>
+                  <td>16</td>
+                  <td>Case Manager</td>
+                  <td>Today, 9:30 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Students</td>
+                  <td>Dynamic Group</td>
+                  <td>547</td>
+                  <td>Reporter</td>
+                  <td>Today, 9:30 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>IT Department</td>
+                  <td>Security Group</td>
+                  <td>5</td>
+                  <td>IT Administrator</td>
+                  <td>Today, 9:30 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Directory Users Panel -->
+          <div id="ms-users" class="admin-panel">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              <div>
+                <h3 style="font-size: 18px; margin-bottom: 10px; color: var(--primary);">EntraID Users</h3>
+                <p>View and manage users synchronized from Microsoft EntraID</p>
+              </div>
+              <div>
+                <button class="btn btn-primary">View Details</button>
+              </div>
+            </div>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Groups</th>
+                  <th>Last Sign-in</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>James Porter</td>
+                  <td>j.porter@school.edu</td>
+                  <td>Safeguarding</td>
+                  <td>3</td>
+                  <td>Today, 8:45 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Sarah Williams</td>
+                  <td>s.williams@school.edu</td>
+                  <td>Teaching</td>
+                  <td>2</td>
+                  <td>Today, 9:15 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>David Chen</td>
+                  <td>d.chen@school.edu</td>
+                  <td>IT</td>
+                  <td>2</td>
+                  <td>Today, 8:30 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Emily Johnson</td>
+                  <td>e.johnson@school.edu</td>
+                  <td>Administration</td>
+                  <td>1</td>
+                  <td>Yesterday, 4:45 PM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Michael Smith</td>
+                  <td>m.smith@school.edu</td>
+                  <td>Teaching</td>
+                  <td>2</td>
+                  <td>Today, 7:50 AM</td>
+                  <td><span class="sync-status sync-status-success">Active</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Teams Integration Panel -->
+          <div id="ms-teams" class="admin-panel">
+            <div style="margin-bottom: 30px;">
+              <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Teams Channels</h3>
+              <p style="margin-bottom: 20px;">Configure which Teams channels receive SafeShout notifications</p>
+              
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Channel Name</th>
+                    <th>Team</th>
+                    <th>Notification Types</th>
+                    <th>Recipients</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Safeguarding Alerts</td>
+                    <td>Safeguarding Team</td>
+                    <td>All alerts</td>
+                    <td>6 members</td>
+                    <td><span class="sync-status sync-status-success">Active</span></td>
+                    <td>
+                      <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Configure</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Pastoral Care</td>
+                    <td>Form Tutors</td>
+                    <td>Assigned cases only</td>
+                    <td>16 members</td>
+                    <td><span class="sync-status sync-status-success">Active</span></td>
+                    <td>
+                      <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Configure</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Academic Concerns</td>
+                    <td>Teaching Staff</td>
+                    <td>Academic alerts only</td>
+                    <td>42 members</td>
+                    <td><span class="sync-status sync-status-success">Active</span></td>
+                    <td>
+                      <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Configure</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Urgent Concerns</td>
+                    <td>DSL Team</td>
+                    <td>High priority only</td>
+                    <td>4 members</td>
+                    <td><span class="sync-status sync-status-success">Active</span></td>
+                    <td>
+                      <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Configure</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div>
+              <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Notification Preview</h3>
+              
+              <div style="background-color: #2c2c2c; color: white; padding: 20px; border-radius: 8px;">
+                <div style="font-weight: 600; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">
+                  <div style="display: flex; align-items: center;">
+                    <span style="margin-right: 10px;">🤖</span>
+                    SafeShout Bot
+                  </div>
+                </div>
+                
+                <div style="background-color: #444; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                  <div style="font-weight: 600; color: var(--warning); margin-bottom: 10px;">New Safeguarding Alert</div>
+                  <div style="margin-bottom: 15px;">A new safeguarding concern has been reported that requires your attention.</div>
+                  
+                  <div style="margin-bottom: 5px;"><strong>Student:</strong> Sophie Taylor (Year 10)</div>
+                  <div style="margin-bottom: 5px;"><strong>Type:</strong> Online Harassment</div>
+                  <div style="margin-bottom: 15px;"><strong>Reported:</strong> May 17, 2025, 09:45 AM</div>
+                  
+                  <div style="display: flex; gap: 10px;">
+                    <button style="background-color: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">View Details</button>
+                    <button style="background-color: #666; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Assign Case</button>
+                  </div>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                  <div style="font-weight: 600; margin-bottom: 5px;">Mr. Patel</div>
+                  <div style="margin-bottom: 3px;">I've reviewed the details and have scheduled a meeting with Sophie to discuss this further. I'll update the case with my findings.</div>
+                  <div style="font-size: 12px; color: #999;">10:15 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Configuration Panel -->
+          <div id="ms-config" class="admin-panel">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">EntraID Application Settings</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Connection Status</label>
+                  <div style="display: flex; align-items: center;">
+                    <span style="width: 12px; height: 12px; background-color: var(--success); border-radius: 50%; margin-right: 8px;"></span>
+                    <span>Connected</span>
+                  </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Application ID</label>
+                  <input type="text" value="•••••••••••••••••••••••••••••••••" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);" disabled>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Directory ID</label>
+                  <input type="text" value="•••••••••••••••••••••••••••••••••" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);" disabled>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">API Permissions</label>
+                  <div style="background-color: white; padding: 10px; border-radius: 4px; border: 1px solid var(--border);">
+                    <div><span class="badge badge-primary">User.Read.All</span></div>
+                    <div><span class="badge badge-primary">Group.Read.All</span></div>
+                    <div><span class="badge badge-primary">Directory.Read.All</span></div>
+                    <div><span class="badge badge-primary">ChannelMessage.Send</span></div>
+                  </div>
+                </div>
+                
+                <button class="btn btn-primary">Edit Application Settings</button>
+              </div>
+              
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Directory Synchronization</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Sync Frequency</label>
+                  <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                    <option>Every 6 hours</option>
+                    <option selected>Every 12 hours</option>
+                    <option>Every 24 hours</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Filter Settings</label>
+                  <div style="background-color: white; padding: 10px; border-radius: 4px; border: 1px solid var(--border);">
+                    (department eq 'Teaching' or 
+                    department eq 'Administration' or
+                    department eq 'Safeguarding' or
+                    startsWith(jobTitle, 'Student'))
+                  </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Group Mapping</label>
+                  <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 4px; overflow: hidden;">
+                    <tr>
+                      <th style="text-align: left; padding: 8px; border-bottom: 1px solid var(--border);">EntraID Group</th>
+                      <th style="text-align: left; padding: 8px; border-bottom: 1px solid var(--border);">SafeShout Role</th>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Designated Safeguarding Leads</td>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Administrator</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Form Tutors</td>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Case Manager</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Teaching Staff</td>
+                      <td style="padding: 8px; border-bottom: 1px solid var(--border);">Reporter</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px;">Students</td>
+                      <td style="padding: 8px;">Student</td>
+                    </tr>
+                  </table>
+                </div>
+                
+                <button class="btn btn-primary">Update Sync Settings</button>
+              </div>
+            </div>
+            
+            <div class="data-mapping">
+              <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Data Mapping</h3>
+              <p style="margin-bottom: 20px;">See how Microsoft EntraID data maps to SafeShout fields</p>
+              
+              <div class="mapping-row">
+                <div class="mapping-source microsoft-source">
+                  <div class="mapping-title">Microsoft User</div>
+                  <div class="mapping-description">displayName, mail, userPrincipalName, department</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout User</div>
+                  <div class="mapping-description">name, email, username, department</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source microsoft-source">
+                  <div class="mapping-title">Microsoft Group</div>
+                  <div class="mapping-description">displayName, description, members, owners</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Role Group</div>
+                  <div class="mapping-description">name, description, members, administrators</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source microsoft-source">
+                  <div class="mapping-title">Teams Channel</div>
+                  <div class="mapping-description">displayName, description, members</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Notification Group</div>
+                  <div class="mapping-description">name, description, recipients</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Active Directory Integration Content -->
+    <div id="ad-integration" class="integration-content">
+      <div class="integration-banner ad-banner">
+        <div class="banner-overlay">
+          <div class="banner-title">Active Directory Integration</div>
+          <div class="banner-description">Connect SafeShout with your on-premises Active Directory for comprehensive identity management and role-based access control.</div>
+        </div>
+      </div>
+      
+      <div class="integration-grid">
+        <div class="integration-features">
+          <h2 class="section-title">Key Features</h2>
+          <p class="section-subtitle">Leverage your existing Active Directory infrastructure for enhanced safeguarding.</p>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">🔁</div>
+              <div class="feature-title">AD Synchronization</div>
+              <p>Regularly synchronize user accounts, groups, and organizational units from your Active Directory to SafeShout's safeguarding platform.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">🔑</div>
+              <div class="feature-title">LDAP Authentication</div>
+              <p>Use Lightweight Directory Access Protocol (LDAP) to authenticate users against your existing Active Directory, eliminating the need for separate credentials.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">👮‍♂️</div>
+              <div class="feature-title">Role Mapping</div>
+              <p>Map Active Directory security groups to SafeShout roles, ensuring appropriate access levels for different staff members based on your AD structure.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">🔄</div>
+              <div class="feature-title">Hybrid Deployment</div>
+              <p>Support for hybrid deployments with both on-premises Active Directory and cloud services, providing flexibility as you migrate to the cloud.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">🏢</div>
+              <div class="feature-title">Organizational Structure</div>
+              <p>Import your school's organizational structure directly from Active Directory's Organizational Units for a familiar hierarchical view.</p>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon" style="color: #333;">🔐</div>
+              <div class="feature-title">Secure Connector</div>
+              <p>Our secure AD connector ensures that your directory information remains protected while enabling seamless integration.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="integration-stats">
+          <h2 class="section-title">Integration Stats</h2>
+          <p class="section-subtitle">Real-time statistics about your Active Directory integration.</p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">578</div>
+              <div class="stat-label">Total AD Users</div>
+              <div class="stat-change">+5 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Security Groups</div>
+              <div class="stat-change">+1 in last 7 days</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">8</div>
+              <div class="stat-label">Organizational Units</div>
+              <div class="stat-change">Unchanged</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-value">99%</div>
+              <div class="stat-label">Sync Success Rate</div>
+              <div class="stat-change">+1% from last month</div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 30px;">
+            <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Connector Status</h3>
+            <div style="background-color: white; border-radius: 8px; padding: 15px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div style="font-weight: 500;">Status</div>
+                <div style="font-weight: 500; color: var(--success);">Running</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Last Heartbeat</div>
+                <div>Today, 8:00 AM</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div>Version</div>
+                <div>v3.2.1</div>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between;">
+                <div>Sync Frequency</div>
+                <div>Every 4 hours</div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-ad" style="width: 100%; margin-top: 20px;">Check Connector Status</button>
+        </div>
+      </div>
+      
+      <div class="integration-demo">
+        <div class="demo-header">
+          <h2>Active Directory Administration</h2>
+          <button class="btn btn-secondary">Add Connection</button>
+        </div>
+        
+        <div class="demo-content">
+          <div class="admin-tabs">
+            <div class="admin-tab active" onclick="switchAdminTab('ad-groups')">Security Groups</div>
+            <div class="admin-tab" onclick="switchAdminTab('ad-users')">Users</div>
+            <div class="admin-tab" onclick="switchAdminTab('ad-config')">Configuration</div>
+            <div class="admin-tab" onclick="switchAdminTab('ad-logs')">Sync Logs</div>
+          </div>
+          
+          <!-- AD Groups Panel -->
+          <div id="ad-groups" class="admin-panel active">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Group Name</th>
+                  <th>Distinguished Name</th>
+                  <th>Members</th>
+                  <th>SafeShout Role</th>
+                  <th>Last Sync</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Oakwood_DSL</td>
+                  <td>CN=Oakwood_DSL,OU=Staff,OU=Oakwood,DC=school,DC=local</td>
+                  <td>5</td>
+                  <td>Administrator</td>
+                  <td>Today, 8:00 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Oakwood_Teachers</td>
+                  <td>CN=Oakwood_Teachers,OU=Staff,OU=Oakwood,DC=school,DC=local</td>
+                  <td>38</td>
+                  <td>Reporter</td>
+                  <td>Today, 8:00 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Oakwood_FormTutors</td>
+                  <td>CN=Oakwood_FormTutors,OU=Staff,OU=Oakwood,DC=school,DC=local</td>
+                  <td>15</td>
+                  <td>Case Manager</td>
+                  <td>Today, 8:00 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Oakwood_Students</td>
+                  <td>CN=Oakwood_Students,OU=Students,OU=Oakwood,DC=school,DC=local</td>
+                  <td>520</td>
+                  <td>Student</td>
+                  <td>Today, 8:00 AM</td>
+                  <td>
+                    <button class="btn btn-primary" style="font-size: 14px; padding: 5px 10px;">Manage</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- AD Users Panel -->
+          <div id="ad-users" class="admin-panel">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+              <div>
+                <h3 style="font-size: 18px; margin-bottom: 10px; color: var(--primary);">Active Directory Users</h3>
+                <p>View and manage users synchronized from your on-premises Active Directory</p>
+              </div>
+              <div>
+                <button class="btn btn-primary">Filter View</button>
+              </div>
+            </div>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Display Name</th>
+                  <th>Email</th>
+                  <th>OU Path</th>
+                  <th>Groups</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>jsmith</td>
+                  <td>John Smith</td>
+                  <td>j.smith@school.local</td>
+                  <td>OU=Staff,OU=Oakwood</td>
+                  <td>2</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                </tr>
+                <tr>
+                  <td>lbrown</td>
+                  <td>Laura Brown</td>
+                  <td>l.brown@school.local</td>
+                  <td>OU=Staff,OU=Oakwood</td>
+                  <td>3</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                </tr>
+                <tr>
+                  <td>dcooper</td>
+                  <td>David Cooper</td>
+                  <td>d.cooper@school.local</td>
+                  <td>OU=IT,OU=Staff,OU=Oakwood</td>
+                  <td>2</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                </tr>
+                <tr>
+                  <td>hpatel</td>
+                  <td>Harish Patel</td>
+                  <td>h.patel@school.local</td>
+                  <td>OU=Staff,OU=Oakwood</td>
+                  <td>2</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                </tr>
+                <tr>
+                  <td>awilliams</td>
+                  <td>Amelia Williams</td>
+                  <td>a.williams@school.local</td>
+                  <td>OU=Students,OU=Oakwood</td>
+                  <td>1</td>
+                  <td><span class="sync-status sync-status-success">Synced</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- AD Configuration Panel -->
+          <div id="ad-config" class="admin-panel">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">LDAP Connection Settings</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Server URL</label>
+                  <input type="text" value="ldaps://dc01.school.local:636" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Base DN</label>
+                  <input type="text" value="DC=school,DC=local" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Bind DN</label>
+                  <input type="text" value="CN=SafeShout Service,OU=Service Accounts,DC=school,DC=local" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Bind Password</label>
+                  <input type="password" value="••••••••••••••••" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Connection Security</label>
+                  <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                    <option>None</option>
+                    <option>StartTLS</option>
+                    <option selected>SSL/TLS</option>
+                  </select>
+                </div>
+                
+                <button class="btn btn-primary">Test Connection</button>
+              </div>
+              
+              <div style="background-color: var(--light-bg); border-radius: 8px; padding: 20px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Synchronization Settings</h3>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Sync Schedule</label>
+                  <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                    <option>Every hour</option>
+                    <option selected>Every 4 hours</option>
+                    <option>Every 12 hours</option>
+                    <option>Daily</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">User Filter</label>
+                  <textarea style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border); font-family: monospace; height: 80px;">(&(objectClass=user)(memberOf=CN=*Oakwood*))</textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Group Filter</label>
+                  <textarea style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border); font-family: monospace; height: 80px;">(&(objectClass=group)(CN=Oakwood*))</textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <label style="display: block; margin-bottom: 5px; font-weight: 500;">Page Size</label>
+                  <input type="number" value="1000" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                </div>
+                
+                <button class="btn btn-primary">Save Settings</button>
+              </div>
+            </div>
+            
+            <div class="data-mapping">
+              <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Data Mapping</h3>
+              <p style="margin-bottom: 20px;">See how Active Directory data maps to SafeShout fields</p>
+              
+              <div class="mapping-row">
+                <div class="mapping-source ad-source">
+                  <div class="mapping-title">AD User</div>
+                  <div class="mapping-description">sAMAccountName, mail, displayName, givenName, sn</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout User</div>
+                  <div class="mapping-description">username, email, displayName, firstName, lastName</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source ad-source">
+                  <div class="mapping-title">AD Group</div>
+                  <div class="mapping-description">cn, distinguishedName, member</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Role Group</div>
+                  <div class="mapping-description">name, path, members</div>
+                </div>
+              </div>
+              
+              <div class="mapping-row">
+                <div class="mapping-source ad-source">
+                  <div class="mapping-title">AD Organizational Unit</div>
+                  <div class="mapping-description">ou, distinguishedName</div>
+                </div>
+                
+                <div class="mapping-arrow">→</div>
+                
+                <div class="mapping-target safeshout-target">
+                  <div class="mapping-title">SafeShout Department</div>
+                  <div class="mapping-description">name, path</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- AD Logs Panel -->
+          <div id="ad-logs" class="admin-panel">
+            <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--primary);">Synchronization Logs</h3>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Event</th>
+                  <th>Details</th>
+                  <th>Status</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>May 19, 2025 - 8:00 AM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full directory synchronization</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>2m 12s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 4:00 PM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full directory synchronization</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>2m 18s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 12:00 PM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full directory synchronization</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>2m 15s</td>
+                </tr>
+                <tr>
+                  <td>May 18, 2025 - 8:00 AM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full directory synchronization</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>2m 14s</td>
+                </tr>
+                <tr>
+                  <td>May 17, 2025 - 4:00 PM</td>
+                  <td>Scheduled Sync</td>
+                  <td>Full directory synchronization</td>
+                  <td><span class="sync-status sync-status-success">Success</span></td>
+                  <td>2m 11s</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Function to switch between integration tabs
+    function showIntegration(integrationId) {
+      // Hide all integration contents
+      document.querySelectorAll('.integration-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Show selected integration content
+      document.getElementById(`${integrationId}-integration`).classList.add('active');
+      
+      // Update tabs active state
+      document.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Find the clicked tab by content and add active class
+      document.querySelectorAll('.platform-tab').forEach(tab => {
+        if (tab.textContent.trim().toLowerCase().includes(integrationId)) {
+          tab.classList.add('active');
+        }
+      });
+    }
+    
+    // Function to switch between admin panels
+    function switchAdminTab(tabId) {
+      // Get parent container
+      const container = document.getElementById(tabId).closest('.demo-content');
+      
+      // Hide all panels in this container
+      container.querySelectorAll('.admin-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      
+      // Show selected panel
+      document.getElementById(tabId).classList.add('active');
+      
+      // Update tabs active state
+      container.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Add active class to clicked tab
+      container.querySelectorAll('.admin-tab').forEach(tab => {
+        if (tab.getAttribute('onclick').includes(tabId)) {
+          tab.classList.add('active');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
